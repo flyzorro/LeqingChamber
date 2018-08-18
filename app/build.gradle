@@ -22,6 +22,20 @@ android {
     }
 }
 
+sourceSets{
+    test.java.srcDirs+='src/test/kotlin'
+    androidTest.java.srcDirs+='src/androidTest/kotlin'
+}
+
+afterEvaluate{
+    android.sourceSets.all{sourceSet->
+        if(!sourceSet.name.startsWith('test')||!sourceSet.name.startsWith('androidTest')){
+            sourceSet.kotlin.setSrcDirs([])
+        }
+    }
+}
+
+
 dependencies {
     def applicationDependencies = rootProject.ext.mainApplication
     def unitTestDependencies = rootProject.ext.unitTesting
@@ -47,15 +61,21 @@ dependencies {
     implementation applicationDependencies.recyclerView
     implementation applicationDependencies.cardView
     implementation applicationDependencies.androidAnnotations
+    implementation applicationDependencies.rxandroid
 
 
 
     //Unit/Integration tests dependencies
     testImplementation unitTestDependencies.junit
+    testImplementation unitTestDependencies.mockitokotlin2
+    testImplementation unitTestDependencies.kluent
+    testImplementation unitTestDependencies.robolectric
 
     //Acceptance tests dependencies
     androidTestImplementation acceptanceTestDependencies.testRunner
     androidTestImplementation acceptanceTestDependencies.espressoCore
+    androidTestImplementation acceptanceTestDependencies.testRules
+    androidTestImplementation acceptanceTestDependencies.espressoIntents
 
 
 

@@ -2,7 +2,7 @@
 apply from: 'buildsystem/dependencies.gradle'
 
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext.kotlin_version = '1.2.60'
     repositories {
         google()
         jcenter()
@@ -22,6 +22,16 @@ allprojects {
         jcenter()
     }
 }
+
+task runUnitTests(dependsOn:[':app:testDebugUnitTest']){
+    description'Runallunittests'
+}
+
+task runAcceptanceTests(dependsOn:[':app:connectedAndroidTest']){
+    description'Runallacceptancetests.'
+}
+
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
